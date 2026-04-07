@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from models.tickets import Ticket
 from database.db import create_table
 from models.user import User
+from models.devices import Device
 
 app = Flask(__name__)
 app.secret_key = 'anshum_key'
@@ -61,14 +62,19 @@ def logout():
 # for logging out, it clears the session and takes user to login page.
 
 
-@app.route('/user_dashboard')
+@app.route("/user_dashboard")
 def user_dashboard():
     if 'user_id' not in session or session.get('role') != 'user':
         return redirect(url_for('login'))
 
-    user_id = session['user_id']
-    tickets = Ticket.get_user_tickets(user_id)
-    return render_template('user_dashboard.html', tickets=tickets)
+    tickets = Ticket.get_tickets_by_user(session["user_id"])
+    devices = Device.get_all_devices()
+
+    return render_template(
+        "user_dashboard.html",
+        tickets=tickets,
+        devices=devices
+    )
 # user dashboard, fetches tickets of the particular user.
 
 
@@ -78,7 +84,8 @@ def staff_dashboard():
         return redirect(url_for('login'))
 
     tickets = Ticket.get_all_tickets()
-    return render_template('staff_dashboard.html', tickets=tickets)
+    devices = Device.get_all_devices()
+    return render_template('staff_dashboard.html', tickets=tickets, devices=devices)
 
 # staff dashboard, fetches all of the tickets created by a;; users.
 
@@ -114,6 +121,53 @@ def complete_ticket(ticket_id):
     return redirect(url_for('staff_dashboard'))
 # when staff reviews the ticket, they can change its status as completed.
 
+# devices management route.
+
+@app.route('/devices')
+def view_devices():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    devices = Device.get_all_devices()
+    return render_template('devices.html', devices=devices)
+
+# adding a device.
+
+@app.route("/add_device", methods=["GET", "POST"])
+def add_device():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    if request.method == "POST":
+        device_name = request.form.get("device_name")
+        device_type = request.form.get("device_type")
+        assigned_to = request.form.get("assigned_to")
+        serial_number = request.form.get("serial_number")
+        location = request.form.get("location")
+        last_maintenance_date = request.form.get("last_maintenance_date")
+
+        device = Device(
+            None,
+            device_name,
+            device_type,
+            int(assigned_to),
+            serial_number,
+            location,
+            last_maintenance_date
+        )
+        device.add_device()
+
+        return redirect(url_for("view_devices"))
+
+    return render_template("add_device.html")
+
+@app.route("/delete_device/<int:device_id>", methods=["POST"])
+def delete_device(device_id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    Device.delete_device(device_id)
+    return redirect(url_for("view_devices"))
 
 if __name__ == '__main__':
     app.run(debug=True)

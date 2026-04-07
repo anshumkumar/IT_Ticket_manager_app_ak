@@ -1,0 +1,32 @@
+<html>
+<head>
+    <title>Add Device</title>
+</head>
+<body>
+    <H1>Add New Device</H1>
+    <br>
+    <p> Make your organisation's device management easier.</p>
+    <br>
+    <form method="POST" action="/add_device">
+    <label>Device Name:</label>
+    <input type="text" name="device_name" required><br>
+
+    <label>Device Type:</label>
+    <input type="text" name="device_type" required><br>
+
+    <label>Assigned To (User ID):</label>
+    <input type="number" name="assigned_to" required><br>
+
+    <label>Serial Number:</label>
+    <input type="text" name="serial_number" required><br>
+
+    <label>Location:</label>
+    <input type="text" name="location" required><br>
+
+    <label>Last Maintenance Date:</label>
+    <input type="date" name="last_maintenance_date" required><br>
+
+    <button type="submit">Add Device</button>
+</form>
+</body>
+</html>

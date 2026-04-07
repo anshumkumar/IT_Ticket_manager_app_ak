@@ -10,6 +10,12 @@
     <a href="{{ url_for('submit_ticket') }}">Submit a New Ticket</a>
     <br><br>
 
+    <a href="{{ url_for('add_device') }}">Add Device</a>
+    <br><br>
+
+    <a href="{{ url_for('view_devices') }}">View Devices</a>
+    <br><br>
+
     <a href="{{ url_for('logout') }}">Logout</a>
 
     <p>Submit a new ticket or view your tickets below</p>
@@ -35,10 +41,39 @@
                 <td>{{ ticket.status }}</td>
             </tr>
             {% endfor %}
-
         </table>
     {% else %}
         <p>You have not submitted any tickets yet.</p>
+    {% endif %}
+
+    <h2>Devices</h2>
+
+    {% if devices %}
+        <table border="1">
+            <tr>
+                <th>Device ID</th>
+                <th>Device Name</th>
+                <th>Device Type</th>
+                <th>Assigned To</th>
+                <th>Serial Number</th>
+                <th>Location</th>
+                <th>Last Maintenance Date</th>
+            </tr>
+
+            {% for device in devices %}
+            <tr>
+                <td>{{ device.device_id }}</td>
+                <td>{{ device.device_name }}</td>
+                <td>{{ device.device_type }}</td>
+                <td>{{ device.assigned_to }}</td>
+                <td>{{ device.serial_number }}</td>
+                <td>{{ device.location }}</td>
+                <td>{{ device.last_maintenance_date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No devices registered.</p>
     {% endif %}
 
 </body>

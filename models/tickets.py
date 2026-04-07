@@ -35,6 +35,18 @@ class Ticket:
     # gets tickets for a particular user by using their user id.
 
     @staticmethod
+    def get_tickets_by_user(user_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM tickets WHERE user_id = ?', (user_id,))
+        rows = cursor.fetchall()
+        conn.close()
+        tickets = []
+        for row in rows:
+            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority']))
+        return tickets
+
+    @staticmethod
     def get_all_tickets():
         conn = get_db_connection()
         cursor = conn.cursor()

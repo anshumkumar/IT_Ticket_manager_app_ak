@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Submit a Ticket</title>
+</head>
+<body>
+
+    <h1>Submit Ticket</h1>
+
+    <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+    <br><br>
+
+    <form method="POST">
+
+        <label>Title:</label>
+        <input type="text" name="title" required>
+        <br><br>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+        <br><br>
+
+        <label>Category:</label>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Hardware">Hardware</option>
+            <option value="Software">Software</option>
+            <option value="Network">Network</option>
+            <option value="Account">Account</option>
+            <option value="Other">Other</option>
+        </select>
+        <br><br>
+
+        <label>Priority:</label>
+        <select name="priority" required>
+            <option value="">Select Priority</option>
+            <option value="1">Low</option>
+            <option value="2">Medium</option>
+            <option value="3">High</option>
+        </select>
+        <br><br>
+
+        <button type="submit">Submit Your Ticket</button>
+
+    </form>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Staff Dashboard</title>
+</head>
+<body>
+
+    <h1>Staff Dashboard</h1>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <h2>All Tickets</h2>
+
+    {% if tickets %}
+        <table border="1">
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.user_id }}</td>
+                <td>{{ ticket.user_name }}</td>
+                <td>{{ ticket.username }}</td>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.category }}</td>
+                <td>{{ ticket.priority }}</td>
+                <td>{{ ticket.status }}</td>
+                <td>
+                    {% if ticket.status != 'Closed' %}
+                        <form action="{{ url_for('complete_ticket', ticket_id=ticket.id) }}" method="POST">
+                            <button type="submit">Mark Complete</button>
+                        </form>
+                    {% else %}
+                        Completed
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No tickets available.</p>
+    {% endif %}
+
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Dashboard</title>
+</head>
+<body>
+
+    <h1>Welcome to Your Dashboard {{ session.username }}</h1>
+
+    <a href="{{ url_for('submit_ticket') }}">Submit a New Ticket</a>
+    <br><br>
+
+    <a href="{{ url_for('logout') }}">Logout</a>
+
+    <p>Submit a new ticket or view your tickets below</p>
+
+    <h2>Your Tickets</h2>
+
+    {% if tickets %}
+        <table border="1">
+            <tr>
+                <th>Ticket ID</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Priority</th>
+                <th>Status</th>
+            </tr>
+
+            {% for ticket in tickets %}
+            <tr>
+                <td>{{ ticket.id }}</td>
+                <td>{{ ticket.title }}</td>
+                <td>{{ ticket.category }}</td>
+                <td>{{ ticket.priority }}</td>
+                <td>{{ ticket.status }}</td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <p>You have not submitted any tickets yet.</p>
+    {% endif %}
+
+</body>
+</html>

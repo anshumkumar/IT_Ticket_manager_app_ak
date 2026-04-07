@@ -9,6 +9,10 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+# I have defined a function to create sqlite tables.
+# these are used to store user information and ticket details.
+# staff and users are seperated through role attribute.
+
 def create_table():
     conn = get_db_connection()
     cursor = conn.cursor()

@@ -41,6 +41,11 @@ def create_table():
     except sqlite3.OperationalError:
         pass
 
+    try:
+        cursor.execute("ALTER TABLE tickets ADD COLUMN additional_info TEXT")
+    except sqlite3.OperationalError:
+       pass
+
     cursor.execute('''CREATE TABLE IF NOT EXISTS devices (
                    device_id INTEGER PRIMARY KEY AUTOINCREMENT,
                    assigned_to INTEGER NOT NULL,

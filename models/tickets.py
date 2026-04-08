@@ -1,7 +1,7 @@
 from database.db import get_db_connection
 
 class Ticket:
-    def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None):
+    def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None, additional_info=None):
         self.id = id
         self.user_id = user_id
         self.title = title
@@ -10,8 +10,10 @@ class Ticket:
         self.category = category
         self.priority = priority
         self.staff_notes = staff_notes 
+        self.additinal_info
 # this is the ticket class, it has attrubutes for tickets, explained in my class diagram and documentation.
 # adding new functionality for staff to add notes to tickets, so im adding annother attribute called staff_notes.
+# additional info functionality being added.
 
     def create_ticket(self):
         conn = get_db_connection()
@@ -74,6 +76,7 @@ class Ticket:
                 row['category'],
                 row['priority'],
                 row['staff_notes']  #new update of staff notes functionality.
+                row['additional_info']  #adding additional info.
             )
 
             ticket.user_name = row['name']
@@ -112,6 +115,18 @@ class Ticket:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("UPDATE tickets SET staff_notes = ? WHERE id = ?", (notes, ticket_id))
+        conn.commit()
+        conn.close()
+        
+        
+    @staticmethod
+    def add_additional_info(ticket_id, additional_info):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+        "UPDATE tickets SET additional_info = ?, status = ? WHERE id = ?",
+        (additional_info, "Info Provided", ticket_id)
+        )
         conn.commit()
         conn.close()
 

@@ -195,6 +195,24 @@ def update_staff_notes(ticket_id):
     Ticket.staff_notes_update(ticket_id, notes)
     return redirect(url_for('staff_dashboard'))
 
+# staff requesting for more info
+
+@app.route('/ticket/<int:ticket_id>/info_needed', methods=['POST'])
+def info_for_ticket(ticket_id):
+    if 'user_id' not in session or session.get('role') != 'staff':
+        return redirect(url_for('login'))
+
+    Ticket.update_ticket_status(ticket_id, 'Awaiting Info')
+    return redirect(url_for('staff_dashboard'))
+
+@app.route('/ticket/<int:ticket_id>/additional_info', methods=['POST'])
+def info_provided(ticket_id):
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+
+    additional_info = request.form.get('additional_info', '').strip()
+    Ticket.additional_info_update(ticket_id, additional_info)
+    return redirect(url_for('user_dashboard'))
 
 
 if __name__ == '__main__':

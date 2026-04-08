@@ -14,8 +14,13 @@
     <label>Device Type:</label>
     <input type="text" name="device_type" required><br>
 
-    <label>Assigned To (User ID):</label>
-    <input type="number" name="assigned_to" required><br>
+    <label>Assigned To:</label>
+    <select name="assigned_to" required>
+        {% for user in users %}
+        <option value="{{ user.id }}">{{ user.name }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
 
     <label>Serial Number:</label>
     <input type="text" name="serial_number" required><br>

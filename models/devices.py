@@ -54,13 +54,18 @@ class Device:
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        cursor.execute('SELECT * FROM devices')
+        cursor.execute('''
+            SELECT devices.*, users.name
+            FROM devices
+            LEFT JOIN users ON devices.assigned_to = users.id
+        ''')
+
         rows = cursor.fetchall()
         conn.close()
 
         devices = []
         for row in rows:
-            devices.append(Device(
+            device = Device(
                 row['device_id'],
                 row['device_name'],
                 row['device_type'],
@@ -68,7 +73,15 @@ class Device:
                 row['serial_number'],
                 row['location'],
                 row['last_maintenance_date']
-            ))
+            )
+
+            if row['name']:
+                device.user_name = row['name']
+            else:
+                device.user_name = 'Unknown User'
+
+            devices.append(device)
+
         return devices
 
     @staticmethod

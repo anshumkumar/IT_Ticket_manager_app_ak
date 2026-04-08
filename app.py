@@ -157,9 +157,14 @@ def add_device():
         )
         device.add_device()
 
-        return redirect(url_for("view_devices"))
+        if session.get('role') == 'staff':    
+            return redirect(url_for('staff_dashboard'))
+        else:
+            return redirect(url_for('user_dashboard'))
+        # this is fixed, so now application users will be redirected to their dashboard.
 
-    return render_template("add_device.html")
+    users = User.get_all_users()
+    return render_template("add_device.html", users=users)
 
 @app.route("/delete_device/<int:device_id>", methods=["POST"])
 def delete_device(device_id):

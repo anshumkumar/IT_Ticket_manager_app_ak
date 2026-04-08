@@ -19,9 +19,11 @@
                 <th>Name</th>
                 <th>Username</th>
                 <th>Title</th>
+                <th>Description</th>
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Status</th>
+                <th>Staff Notes</th>
                 <th>Action</th>
             </tr>
 
@@ -32,9 +34,17 @@
                 <td>{{ ticket.user_name }}</td>
                 <td>{{ ticket.username }}</td>
                 <td>{{ ticket.title }}</td>
+                <td>{{ ticket.description }}</td>
                 <td>{{ ticket.category }}</td>
                 <td>{{ ticket.priority }}</td>
                 <td>{{ ticket.status }}</td>
+                <td>
+                    <form action="{{ url_for('update_staff_notes', ticket_id=ticket.id) }}" method="POST">
+                        <textarea name="staff_notes" rows="3" cols="20">{{ ticket.staff_notes or '' }}</textarea>
+                        <br>
+                        <button type="submit">Save</button>
+                    </form>
+                </td>
                 <td>
                     {% if ticket.status != 'Closed' %}
                         <form action="{{ url_for('complete_ticket', ticket_id=ticket.id) }}" method="POST">

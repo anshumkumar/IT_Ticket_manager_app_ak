@@ -34,6 +34,12 @@ def create_table():
                    category TEXT NOT NULL,
                    priority INTEGER NOT NULL
                    )''')
+                   
+                   
+    try:
+        cursor.execute("ALTER TABLE tickets ADD COLUMN staff_notes TEXT")
+    except sqlite3.OperationalError:
+        pass
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS devices (
                    device_id INTEGER PRIMARY KEY AUTOINCREMENT,

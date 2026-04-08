@@ -174,5 +174,28 @@ def delete_device(device_id):
     Device.delete_device(device_id)
     return redirect(url_for("view_devices"))
 
+# in tickets.py cancel_ticket function has been created.
+# so here i am adding the app route for it.
+
+@app.route('/ticket/<int:ticket_id>/cancel', methods=['POST'])
+def cancel_ticket(ticket_id):
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+
+    Ticket.cancel_ticket(ticket_id)
+    return redirect(url_for('user_dashboard'))
+
+
+@app.route('/ticket/<int:ticket_id>/notes', methods=['POST'])
+def update_staff_notes(ticket_id):
+    if 'user_id' not in session or session.get('role') != 'staff':
+        return redirect(url_for('login'))
+
+    notes = request.form.get('staff_notes', '')
+    Ticket.staff_notes_update(ticket_id, notes)
+    return redirect(url_for('staff_dashboard'))
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)

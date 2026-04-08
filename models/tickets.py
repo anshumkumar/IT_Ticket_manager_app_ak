@@ -1,7 +1,7 @@
 from database.db import get_db_connection
 
 class Ticket:
-    def __init__(self, id, user_id, title, description, status, category, priority):
+    def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None):
         self.id = id
         self.user_id = user_id
         self.title = title
@@ -9,8 +9,9 @@ class Ticket:
         self.status = status
         self.category = category
         self.priority = priority
+        self.staff_notes = staff_notes 
 # this is the ticket class, it has attrubutes for tickets, explained in my class diagram and documentation.
-
+# adding new functionality for staff to add notes to tickets, so im adding annother attribute called staff_notes.
 
     def create_ticket(self):
         conn = get_db_connection()
@@ -30,7 +31,7 @@ class Ticket:
         conn.close()
         tickets = []
         for row in rows:
-            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority']))
+            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority'], row['staff_notes']))
         return tickets
     # gets tickets for a particular user by using their user id.
 
@@ -43,7 +44,7 @@ class Ticket:
         conn.close()
         tickets = []
         for row in rows:
-            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority']))
+            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority'], row['staff_notes']))
         return tickets
 
     @staticmethod
@@ -55,7 +56,9 @@ class Ticket:
         SELECT tickets.*, users.name, users.username
         FROM tickets
         JOIN users ON tickets.user_id = users.id
+        ORDER BY priority DESC, id DESC  
         ''')
+        # the last line sorts tickets by priority, it is one of the requirement for the app.
 
         rows = cursor.fetchall()
         conn.close()
@@ -69,7 +72,8 @@ class Ticket:
                 row['description'],
                 row['status'],
                 row['category'],
-                row['priority']
+                row['priority'],
+                row['staff_notes']  #new update of staff notes functionality.
             )
 
             ticket.user_name = row['name']
@@ -92,3 +96,22 @@ class Ticket:
         conn.close()
 
     # for staff to update status of a ticket.
+
+    # adding functionality to cancel a ticket.
+
+    @staticmethod
+    def cancel_ticket(ticket_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE tickets SET status = ? WHERE id = ?", ("Cancelled", ticket_id))
+        conn.commit()
+        conn.close()
+
+    @staticmethod
+    def staff_notes_update(ticket_id, notes):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("UPDATE tickets SET staff_notes = ? WHERE id = ?", (notes, ticket_id))
+        conn.commit()
+        conn.close()
+

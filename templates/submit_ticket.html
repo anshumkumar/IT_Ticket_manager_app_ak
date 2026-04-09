@@ -6,6 +6,9 @@
 <body>
 
     <h1>Submit Ticket</h1>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
 
     <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
     <br><br>

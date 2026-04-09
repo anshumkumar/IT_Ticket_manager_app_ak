@@ -137,15 +137,27 @@ class Ticket:
         cursor.execute("UPDATE tickets SET staff_notes = ? WHERE id = ?", (notes, ticket_id))
         conn.commit()
         conn.close()
-        
-        
+
     @staticmethod
     def add_additional_info(ticket_id, additional_info):
         conn = get_db_connection()
         cursor = conn.cursor()
+
+        cursor.execute("SELECT additional_info FROM tickets WHERE id = ?", (ticket_id,))
+        row = cursor.fetchone()
+
+        existing_info = row["additional_info"] if row and row["additional_info"] else ""
+
+        if existing_info:
+            updated_info = existing_info + "\n\n--- New Update ---\n" + additional_info
+        else:
+            updated_info = additional_info
+
         cursor.execute(
-            "UPDATE tickets SET additional_info = ?, status = ? WHERE id = ?",
-            (additional_info, "Info Provided", ticket_id)
-        )
+        "UPDATE tickets SET additional_info = ?, status = ? WHERE id = ?",
+        (updated_info, "Info Provided", ticket_id)
+    )
         conn.commit()
         conn.close()
+
+    #right now the user submits additional info but previous additional info dissapears, it needs to be fixed.

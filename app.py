@@ -13,8 +13,12 @@ create_table()
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if not username or not password:
+            return render_template('login.html', error='Username and password are required.')
+
         user = User.get_user(username)
 # checks if user exists, the credentials added by user match or not.
         if user and user.password == password:
@@ -36,9 +40,12 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        name = request.form['name']
-        username = request.form['username']
-        password = request.form['password']
+        name = request.form.get('name', '').strip()
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if not name or not username or not password:
+            return render_template('register.html', error='All fields are required.')
 
         user_exists = User.get_user(username)
         if user_exists:
@@ -53,7 +60,6 @@ def register():
         return redirect(url_for('login'))
 
     return render_template('register.html')
-
 
 @app.route('/logout')
 def logout():
@@ -97,13 +103,19 @@ def submit_ticket():
 
     if request.method == 'POST':
         user_id = session['user_id']
-        title = request.form['title']
-        description = request.form['description']
-        category = request.form['category']
-        priority = int(request.form['priority'])
+        title = request.form.get('title', '').strip()
+        description = request.form.get('description', '').strip()
+        category = request.form.get('category', '').strip()
+        priority = request.form.get('priority', '').strip()
         status = 'Open'
 
-        new_ticket = Ticket(None, user_id, title, description, status, category, priority)
+        if not title or not description or not category or not priority:
+            return render_template('submit_ticket.html', error='All fields are required.')
+
+        if priority not in ['1', '2', '3']:
+            return render_template('submit_ticket.html', error='Invalid priority selected.')
+
+        new_ticket = Ticket(None, user_id, title, description, status, category, int(priority))
         new_ticket.create_ticket()
 # adds ticket to database.
 # create_ticket function is defined in tickets.py file, it adds the ticket to database.
@@ -139,12 +151,16 @@ def add_device():
         return redirect(url_for('login'))
 
     if request.method == "POST":
-        device_name = request.form.get("device_name")
-        device_type = request.form.get("device_type")
-        assigned_to = request.form.get("assigned_to")
-        serial_number = request.form.get("serial_number")
-        location = request.form.get("location")
-        last_maintenance_date = request.form.get("last_maintenance_date")
+        device_name = request.form.get("device_name", "").strip()
+        device_type = request.form.get("device_type", "").strip()
+        assigned_to = request.form.get("assigned_to", "").strip()
+        serial_number = request.form.get("serial_number", "").strip()
+        location = request.form.get("location", "").strip()
+        last_maintenance_date = request.form.get("last_maintenance_date", "").strip()
+
+        if not device_name or not device_type or not assigned_to or not serial_number or not location or not last_maintenance_date:
+            users = User.get_all_users()
+            return render_template("add_device.html", users=users, error="All fields are required.")
 
         device = Device(
             None,
@@ -211,9 +227,12 @@ def info_provided(ticket_id):
         return redirect(url_for('login'))
 
     additional_info = request.form.get('additional_info', '').strip()
+
+    if not additional_info:
+        return redirect(url_for('user_dashboard'))
+
     Ticket.add_additional_info(ticket_id, additional_info)
     return redirect(url_for('user_dashboard'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)

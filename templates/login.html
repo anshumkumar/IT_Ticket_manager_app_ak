@@ -6,6 +6,9 @@
     <body>
         <h1>Login Page</h1>
         <br>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
         <h2> Welcome to IT Ticket manager - by Anshum </h2>
         <br>
         <form method="POST">
@@ -15,7 +18,7 @@
             <label>Password:</label>
             <input type="password" name="password" required>
             <br><br>
-            <button tyope="submit">Login
+            <button type="submit">Login
             </button>
         </form>
 

@@ -5,7 +5,10 @@
 <body>
     <H1>Add New Device</H1>
     <br>
-    <p> Make your organisation's device management easier.</p>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <p> Manage the devices in your organisation.</p>
     <br>
     <form method="POST" action="/add_device">
     <label>Device Name:</label>

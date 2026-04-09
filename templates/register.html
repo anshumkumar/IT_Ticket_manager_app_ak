@@ -7,6 +7,9 @@
 <body>
     <h1>Register Page</h1>
     <br>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
     <h2> Welcome to IT Ticket manager - by Anshum </h2>
     <br>
     <form method="POST">

@@ -211,7 +211,7 @@ def info_provided(ticket_id):
         return redirect(url_for('login'))
 
     additional_info = request.form.get('additional_info', '').strip()
-    Ticket.additional_info_update(ticket_id, additional_info)
+    Ticket.add_additional_info(ticket_id, additional_info)
     return redirect(url_for('user_dashboard'))
 
 

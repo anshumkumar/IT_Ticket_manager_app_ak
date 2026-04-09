@@ -31,6 +31,7 @@
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Status</th>
+                <th>Additional Info</th>
                 <th>Action</th>
             </tr>
 
@@ -42,8 +43,15 @@
                 <td>{{ ticket.category }}</td>
                 <td>{{ ticket.priority }}</td>
                 <td>{{ ticket.status }}</td>
+                <td>{{ ticket.additional_info or '-' }}</td>
                 <td>
-                    {% if ticket.status != 'Closed' and ticket.status != 'Cancelled' %}
+                    {% if ticket.status == 'Awaiting Info' %}
+                        <form action="{{ url_for('info_provided', ticket_id=ticket.id) }}" method="POST">
+                            <textarea name="additional_info" rows="3" cols="20" required></textarea>
+                            <br>
+                            <button type="submit">Submit Info</button>
+                        </form>
+                    {% elif ticket.status != 'Closed' and ticket.status != 'Cancelled' %}
                         <form action="{{ url_for('cancel_ticket', ticket_id=ticket.id) }}" method="POST">
                             <button type="submit">Cancel</button>
                         </form>

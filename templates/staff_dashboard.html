@@ -23,6 +23,7 @@
                 <th>Category</th>
                 <th>Priority</th>
                 <th>Status</th>
+                <th>Additional info</th>
                 <th>Staff Notes</th>
                 <th>Action</th>
             </tr>
@@ -38,6 +39,7 @@
                 <td>{{ ticket.category }}</td>
                 <td>{{ ticket.priority }}</td>
                 <td>{{ ticket.status }}</td>
+                <td>{{ ticket.additional_info or '-' }}</td>
                 <td>
                     <form action="{{ url_for('update_staff_notes', ticket_id=ticket.id) }}" method="POST">
                         <textarea name="staff_notes" rows="3" cols="20">{{ ticket.staff_notes or '' }}</textarea>
@@ -49,6 +51,10 @@
                     {% if ticket.status != 'Closed' %}
                         <form action="{{ url_for('complete_ticket', ticket_id=ticket.id) }}" method="POST">
                             <button type="submit">Mark Complete</button>
+                        </form>
+
+                        <form action="{{ url_for('info_for_ticket', ticket_id=ticket.id) }}" method="POST">
+                            <button type="submit">Request Info</button>
                         </form>
                     {% else %}
                         Completed

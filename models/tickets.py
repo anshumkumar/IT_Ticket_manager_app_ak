@@ -9,8 +9,8 @@ class Ticket:
         self.status = status
         self.category = category
         self.priority = priority
-        self.staff_notes = staff_notes 
-        self.additinal_info
+        self.staff_notes = staff_notes
+        self.additional_info = additional_info
 # this is the ticket class, it has attrubutes for tickets, explained in my class diagram and documentation.
 # adding new functionality for staff to add notes to tickets, so im adding annother attribute called staff_notes.
 # additional info functionality being added.
@@ -33,7 +33,17 @@ class Ticket:
         conn.close()
         tickets = []
         for row in rows:
-            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority'], row['staff_notes']))
+            tickets.append(Ticket(
+                row['id'],
+                row['user_id'],
+                row['title'],
+                row['description'],
+                row['status'],
+                row['category'],
+                row['priority'],
+                row['staff_notes'],
+                row['additional_info']
+            ))
         return tickets
     # gets tickets for a particular user by using their user id.
 
@@ -46,7 +56,17 @@ class Ticket:
         conn.close()
         tickets = []
         for row in rows:
-            tickets.append(Ticket(row['id'], row['user_id'], row['title'], row['description'], row['status'], row['category'], row['priority'], row['staff_notes']))
+            tickets.append(Ticket(
+                row['id'],
+                row['user_id'],
+                row['title'],
+                row['description'],
+                row['status'],
+                row['category'],
+                row['priority'],
+                row['staff_notes'],
+                row['additional_info']
+            ))
         return tickets
 
     @staticmethod
@@ -75,8 +95,8 @@ class Ticket:
                 row['status'],
                 row['category'],
                 row['priority'],
-                row['staff_notes']  #new update of staff notes functionality.
-                row['additional_info']  #adding additional info.
+                row['staff_notes'],
+                row['additional_info']
             )
 
             ticket.user_name = row['name']
@@ -124,9 +144,8 @@ class Ticket:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-        "UPDATE tickets SET additional_info = ?, status = ? WHERE id = ?",
-        (additional_info, "Info Provided", ticket_id)
+            "UPDATE tickets SET additional_info = ?, status = ? WHERE id = ?",
+            (additional_info, "Info Provided", ticket_id)
         )
         conn.commit()
         conn.close()
-

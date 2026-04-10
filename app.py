@@ -3,6 +3,7 @@ from models.tickets import Ticket
 from database.db import create_table
 from models.user import User
 from models.devices import Device
+from werkzeug.security import check_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'anshum_key'
@@ -20,16 +21,27 @@ def login():
             return render_template('login.html', error='Username and password are required.')
 
         user = User.get_user(username)
-# checks if user exists, the credentials added by user match or not.
-        if user and user.password == password:
-            session['user_id'] = user.id
-            session['username'] = user.username
-            session['role'] = user.role    
-# if the role is staff, it takes you to staff dashboard
-            if user.role == 'staff':
-                return redirect(url_for('staff_dashboard'))
+# new update: adding password hashing here:
+        if user: 
+            password_stored = user.password
+            password_right = False   #this statement is declared at beginning
+            if password_stored.startswith("pbkdf2:") or password_stored.startswith("scrypt:"):
+                password_right = check_password_hash(password_stored, password)
+                # this will ensure new passwords are hashed
             else:
-                return redirect(url_for('user_dashboard'))
+                password_right = (password_stored == password)
+                # this is for old accounts created without the use of hash.
+                # old accounts cant be deleted because they have data used for testing.
+
+            if password_right:
+                session['user_id'] = user.id
+                session['username'] = user.username
+                session['role'] = user.role    
+# if the role is staff, it takes you to staff dashboard
+                if user.role == 'staff':
+                    return redirect(url_for('staff_dashboard'))
+                else:
+                    return redirect(url_for('user_dashboard'))
 # admin dashboard has been removed for simplicity.
         return render_template('login.html', error='You have entered an invalid username or password. Please try again.')
 # this is the error message above, for wrong credentials.

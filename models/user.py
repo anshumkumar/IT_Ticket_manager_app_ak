@@ -1,4 +1,6 @@
+from werkzeug.security import generate_password_hash
 from database.db import get_db_connection
+
 
 class User:
     def __init__(self, id, name, username, password, role):
@@ -11,8 +13,10 @@ class User:
     def create_user(self):
         conn = get_db_connection()
         cursor = conn.cursor()
+        # Im going to add password hashing.
+        pass_hashed = generate_password_hash(self.password)   
         cursor.execute('INSERT INTO users (name, username, password, role) VALUES (?, ?, ?, ?)',
-                       (self.name, self.username, self.password, self.role))
+                       (self.name, self.username, pass_hashed, self.role))
         conn.commit()
         conn.close()
     

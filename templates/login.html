@@ -2,8 +2,9 @@
 <html>
     <head>
         <title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
-    <body>
+    <body> 
         <h1>Login Page</h1>
         <br>
         {% if error %}
@@ -11,6 +12,7 @@
         {% endif %}
         <h2> Welcome to IT Ticket manager - by Anshum </h2>
         <br>
+        <div class="login-centre">  
         <form method="POST">
             <label>Username:</label>
             <input type="text" name="username" required>
@@ -23,5 +25,6 @@
         </form>
 
         <p> If you don't have an account, pls register here. <a href="{{ url_for('register') }}">Register here</a></p>
+        </div>
     </body>
 </html>

@@ -1,12 +1,50 @@
+/* Overall background colour, font */
 body {
-    background-color: #9ab0f9;  /* Background colour for entire page */
+    background-color: #5e7beb;  /* Background colour for entire page */
     color: #0a0f2d;
     font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
 }
 
+/* #9ab0f9; */
+
+/* Keeps everything in centre */
 .login-centre{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+}
+
+/* For the entire login box */
+.login-box{
+    background: white;
+    padding: 30px;   /* Makes the box bigger*/
+    border-radius: 10px;   /* This will make the corners round */
+    width: 390px;  /* Perfect width for my text ( Welcome to IT Ticket manager - by Anshum  */
+    text-align: center;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+
+.login-box input {
+    width: 60%;   /*increases width of input box*/
+    padding: 10px;  /* Increases size */
+    border: 2px solid #c9c9c9;   /*Black border in input box */
+    border-radius: 6px;
+}
+
+.login-box button {
+    width: 50%;
+    margin-top: 5px;
+    padding: 7px;
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }

@@ -2,9 +2,11 @@
 <html>
 <head>
     <title>Login</title>
-
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    <div class="login-centre">
+    <div class="login-box">
     <h1>Register Page</h1>
     <br>
     {% if error %}
@@ -30,4 +32,6 @@
     </form>
     <p> If you already have an account, then pls login here. <a href="{{ url_for('login') }}">Login here</a></p>
 </body>
+</div>
+</div>
 </html>

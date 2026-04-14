@@ -3,22 +3,20 @@
 <head>
     <title>User Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
 </head>
-<body>
+<body class="dashboard-page">
 
     <div class="dashboard">
 
         <div class="side-bar">
+            <h2>IT System</h2>
+
             <a href="{{ url_for('submit_ticket') }}">Submit a New Ticket</a>
-            <br><br>
-
             <a href="{{ url_for('add_device') }}">Add Device</a>
-            <br><br>
-
-            <a href="{{ url_for('view_devices') }}">View Devices</a>
-            <br><br>
-
             <a href="{{ url_for('logout') }}">Logout</a>
+            <button onclick="toggleDarkMode()" class="dark-mode-btn"> Dark Mode
+            </button>
         </div>
 
         <div class="main-content">
@@ -26,10 +24,22 @@
 
             <p>Submit a new ticket or view your tickets below</p>
 
+            <div class="summary-board">
+                <div class="summary-stats">
+                    <h3>Total Tickets</h3>
+                    <p>{{ tickets|length }}</p>
+                </div>
+
+                <div class="summary-stats">
+                    <h3>Total Devices</h3>
+                    <p>{{ devices|length }}</p>
+                </div>
+            </div>
+
             <h2>Your Tickets</h2>
 
             {% if tickets %}
-                <table border="1" class="styled-table">
+                <table class="styled-table">
                     <tr>
                         <th>Ticket ID</th>
                         <th>Title</th>
@@ -75,7 +85,7 @@
             <h2>Devices</h2>
 
             {% if devices %}
-                <table border="1" class="styled-table">
+                <table class="styled-table">
                     <tr>
                         <th>Device ID</th>
                         <th>Device Name</th>

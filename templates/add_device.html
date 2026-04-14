@@ -5,6 +5,7 @@
 <body>
     <H1>Add New Device</H1>
     <br>
+    <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
     {% if error %}
     <p style="color: red;">{{ error }}</p>
     {% endif %}

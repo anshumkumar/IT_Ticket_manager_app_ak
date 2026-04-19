@@ -37,8 +37,11 @@ def login():
                 session['user_id'] = user.id
                 session['username'] = user.username
                 session['role'] = user.role    
+            # new update, adding admin functionality.
+                if user.role == 'admin':
+                    return redirect(url_for('admin_dashboard'))
 # if the role is staff, it takes you to staff dashboard
-                if user.role == 'staff':
+                elif user.role == 'staff':
                     return redirect(url_for('staff_dashboard'))
                 else:
                     return redirect(url_for('user_dashboard'))
@@ -245,6 +248,17 @@ def info_provided(ticket_id):
 
     Ticket.add_additional_info(ticket_id, additional_info)
     return redirect(url_for('user_dashboard'))
+
+
+# adding admin app route
+
+@app.route('/admin_dashboard')
+def admin_dashboard():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+
+    users = User.get_all_users()
+    return render_template('admin_dashboard.html', users=users)
 
 if __name__ == '__main__':
     app.run(debug=True)

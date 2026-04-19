@@ -1,6 +1,11 @@
-if (localStorage.getItem("theme") === "dark") {
-    document.body.classList.add("dark-mode");
-}
+document.addEventListener("DOMContentLoaded", function () {
+    const savedTheme = localStorage.getItem("theme");
+
+    if (savedTheme === "dark") {
+        document.body.classList.add("dark-mode");
+    }
+});
+
 
 function toggleDarkMode() {
     document.body.classList.toggle("dark-mode");

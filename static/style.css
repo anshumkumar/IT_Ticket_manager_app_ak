@@ -357,3 +357,74 @@ body {
 .dark-mode .login-box input:focus {
     border-color: #facc15;
 }
+
+
+
+
+
+
+.form-styling {
+    background: rgba(255, 255, 255, 0.92);
+    padding: 28px;
+    border-radius: 12px;
+    max-width: 620px;
+    box-shadow: 0 8px 18px rgba(80, 100, 160, 0.12);
+}
+
+.form-styling label {
+    
+    margin: 14px 0 6px;
+    font-weight: bold;
+    
+}
+
+.form-styling input,
+.form-styling textarea,
+.form-styling select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.form-styling textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-styling button {
+    margin-top: 20px;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+.dark-mode .form-styling {
+    background: #132a4a;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
+}
+
+.dark-mode .form-styling label {
+    color: #facc15;
+}
+
+.dark-mode .form-styling input,
+.dark-mode .form-styling textarea,
+.dark-mode .form-styling select {
+    background: #0f2a4d;
+    color: #e2e8f0;
+    border: 1px solid #274c77;
+}
+
+.dark-mode .form-styling button {
+    background: linear-gradient(135deg, #d4a017, #facc15);
+    color: #0b1e3a;
+}

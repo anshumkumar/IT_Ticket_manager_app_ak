@@ -2,50 +2,75 @@
 <html>
 <head>
     <title>Submit a Ticket</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body class="dashboard-page">
 
-    <h1>Submit Ticket</h1>
-    {% if error %}
-    <p style="color: red;">{{ error }}</p>
-    {% endif %}
+    <div class="dashboard">
 
-    <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
-    <br><br>
+        <div class="side-bar">
+            <h2>IT System</h2>
 
-    <form method="POST">
+            <a href="{{ url_for('user_dashboard') }}">Dashboard</a>
+            <a href="{{ url_for('view_devices') }}">View Devices</a>
 
-        <label>Title:</label>
-        <input type="text" name="title" required>
-        <br><br>
+            <button onclick="toggleDarkMode()" class="dark-mode-btn">
+                Dark Mode
+            </button>
 
-        <label>Description:</label>
-        <textarea name="description" required></textarea>
-        <br><br>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
 
-        <label>Category:</label>
-        <select name="category" required>
-            <option value="">Select Category</option>
-            <option value="Hardware">Hardware</option>
-            <option value="Software">Software</option>
-            <option value="Network">Network</option>
-            <option value="Account">Account</option>
-            <option value="Other">Other</option>
-        </select>
-        <br><br>
+        <div class="main-content">
+            <h1>Submit Ticket</h1>
 
-        <label>Priority:</label>
-        <select name="priority" required>
-            <option value="">Select Priority</option>
-            <option value="1">Low</option>
-            <option value="2">Medium</option>
-            <option value="3">High</option>
-        </select>
-        <br><br>
+            {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            {% endif %}
 
-        <button type="submit">Submit Your Ticket</button>
+            <div class="form-styling">
+                <a href="{{ url_for('user_dashboard') }}">Back to Dashboard</a>
+                <br><br>
 
-    </form>
+                <form method="POST">
+
+                    <label>Title:</label>
+                    <input type="text" name="title" required>
+                    <br><br>
+
+                    <label>Description:</label>
+                    <textarea name="description" required></textarea>
+                    <br><br>
+
+                    <label>Category:</label>
+                    <select name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="Hardware">Hardware</option>
+                        <option value="Software">Software</option>
+                        <option value="Network">Network</option>
+                        <option value="Account">Account</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <br><br>
+
+                    <label>Priority:</label>
+                    <select name="priority" required>
+                        <option value="">Select Priority</option>
+                        <option value="1">Low</option>
+                        <option value="2">Medium</option>
+                        <option value="3">High</option>
+                    </select>
+                    <br><br>
+
+                    <button type="submit">Submit Your Ticket</button>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
 
 </body>
 </html>

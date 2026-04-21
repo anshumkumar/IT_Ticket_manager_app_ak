@@ -38,16 +38,41 @@
                     <button type="submit">Reset</button>
                 </form>
             </td>
-            
         </tr>
         {% endfor %}
     </table>
 
-    
-    
-    
+    <h2>Password Change Requests</h2>
 
+    {% if requests %}
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>New Password</th>
+            <th>Action</th>
+        </tr>
 
+        {% for user in requests %}
+        <tr>
+            <td>{{ user['id'] }}</td>
+            <td>{{ user['name'] }}</td>
+            <td>{{ user['username'] }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('reset_password_admin', user_id=user['id']) }}">
+                    <input type="password" name="new_pass" placeholder="New password" required>
+            </td>
+            <td>
+                    <button type="submit">Reset Password</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <p>No password change requests right now.</p>
+    {% endif %}
 
     <br>
     <a href="{{ url_for('logout') }}">Logout</a>

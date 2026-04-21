@@ -95,7 +95,8 @@ def user_dashboard():
     return render_template(
         "user_dashboard.html",
         tickets=tickets,
-        devices=devices
+        devices=devices,
+        reply=None
     )
 # user dashboard, fetches tickets of the particular user.
 
@@ -267,7 +268,7 @@ def admin_dashboard():
     requests = cursor.fetchall()
     conn.close()
 
-    return render_template('admin_dashboard.html', users=users)
+    return render_template('admin_dashboard.html', users=users, requests = requests)
 
 
 # functionality for admin to delete user accounts.
@@ -315,6 +316,40 @@ def req_pass_reset():
 
     return redirect(url_for('user_dashboard'))
 
+# adding functionality for a chatbot
+# python dictionries will be used for this simple chatbot.
+
+@app.route('/app_chatbot', methods=['POST'])
+def app_chatbot():
+    if 'user_id' not in session or session.get('role') != 'user':
+        return redirect(url_for('login'))
+
+    msg = request.form.get('message', '').lower().strip()
+
+    faq_answers = {
+        "password": "To change your password, click 'Request Password Change'.",
+        "submit ticket": "Click 'Submit a New Ticket'.",
+        "cancel ticket": "You can cancel tickets from your dashboard.",
+        "device": "Use 'Add Device' from the sidebar.",
+        "status": "Check ticket status in your dashboard."
+    }
+
+    reply = "Sorry, I am unable to help you, please contact the admin."
+
+    for key in faq_answers:
+        if key in msg:
+            reply = faq_answers[key]
+            break
+
+    tickets = Ticket.get_tickets_by_user(session["user_id"])
+    devices = Device.get_all_devices()
+
+    return render_template(
+        "user_dashboard.html",
+        tickets=tickets,
+        devices=devices,
+        reply=reply
+    )
 
 
 

@@ -46,6 +46,11 @@ def create_table():
     except sqlite3.OperationalError:
        pass
 
+    try:
+        cursor.execute("ALTER TABLE users ADD COLUMN password_request INTEGER DEFAULT 0")
+    except sqlite3.OperationalError:
+        pass
+
     cursor.execute('''CREATE TABLE IF NOT EXISTS devices (
                    device_id INTEGER PRIMARY KEY AUTOINCREMENT,
                    assigned_to INTEGER NOT NULL,

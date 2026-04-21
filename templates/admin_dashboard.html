@@ -17,6 +17,8 @@
             <th>Name</th>
             <th>Username</th>
             <th>Role</th>
+            <th>Delete Accounts</th>
+            <th>Reset a password</th>
         </tr>
 
         {% for user in users %}
@@ -25,9 +27,27 @@
             <td>{{ user.name }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.role }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('delete_account_admin', user_id=user.id) }}">
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('reset_password_admin', user_id=user.id) }}">
+                    <input type="password" name="new_pass" placeholder="New password" required>
+                    <button type="submit">Reset</button>
+                </form>
+            </td>
+            
         </tr>
         {% endfor %}
     </table>
+
+    
+    
+    
+
+
 
     <br>
     <a href="{{ url_for('logout') }}">Logout</a>

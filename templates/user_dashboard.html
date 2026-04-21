@@ -17,6 +17,9 @@
             <a href="{{ url_for('logout') }}">Logout</a>
             <button onclick="toggleDarkMode()" class="dark-mode-btn"> Dark Mode
             </button>
+            <form action="{{ url_for('req_pass_reset') }}" method="POST">
+                <button type="submit" class="dark-mode-btn">Request Password Change</button>
+            </form>
         </div>
 
         <div class="main-content">

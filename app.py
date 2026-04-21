@@ -1,9 +1,10 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from models.tickets import Ticket
-from database.db import create_table
+from database.db import create_table 
+from database.db import get_db_connection
 from models.user import User
 from models.devices import Device
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 app.secret_key = 'anshum_key'
@@ -258,7 +259,64 @@ def admin_dashboard():
         return redirect(url_for('login'))
 
     users = User.get_all_users()
+
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM users WHERE password_request = 1")
+    requests = cursor.fetchall()
+    conn.close()
+
     return render_template('admin_dashboard.html', users=users)
+
+
+# functionality for admin to delete user accounts.
+@app.route('/admin/delete_account/<int:user_id>', methods=['POST'])
+def delete_account_admin(user_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+
+    if user_id == session['user_id']:
+        return redirect(url_for('admin_dashboard'))
+
+    User.delete_user(user_id)
+    return redirect(url_for('admin_dashboard'))
+
+# functionality for admin to change a users password. 
+
+@app.route('/admin/reset_password_admin/<int:user_id>', methods=['POST'])
+def reset_password_admin(user_id):
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+
+    new_pass = request.form.get('new_pass', '').strip()
+
+    if not new_pass:
+        return redirect(url_for('admin_dashboard'))
+
+    User.password_change(user_id, new_pass)
+    return redirect(url_for('admin_dashboard'))
+
+# users and staff can request password reset.
+
+@app.route('/req_pass_reset', methods=['POST'])
+def req_pass_reset():
+    if 'user_id' not in session  or session.get('role') != 'user':
+        return redirect(url_for('login'))
+    
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE users SET password_request = 1 WHERE id = ?",
+        (session['user_id'],)
+    )
+    conn.commit()
+    conn.close()
+
+    return redirect(url_for('user_dashboard'))
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

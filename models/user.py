@@ -50,6 +50,33 @@ class User:
                 row['role']
             ))
         return users
+    
+    @staticmethod
+    def delete_user(user_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('DELETE FROM users WHERE id = ?', (user_id,))
+        conn.commit()
+        conn.close()
+
+
+    @staticmethod
+    def password_change(user_id, new_pass):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        pass_hashed = generate_password_hash(new_pass)
+
+        cursor.execute(
+            'UPDATE users SET password = ?, password_request = 0 WHERE id = ?',
+
+            (pass_hashed, user_id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        
 
 
 

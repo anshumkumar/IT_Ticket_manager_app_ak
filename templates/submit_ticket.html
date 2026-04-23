@@ -62,6 +62,18 @@
                     </select>
                     <br><br>
 
+                        <label>Link Device:</label>
+                        <select name="device_id">
+                            <option value="">No Device</option>
+                            {% for device in devices %}
+                            <option value="{{ device.device_id }}">
+                                {{ device.device_name }} - {{ device.serial_number }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <br><br>
+                    
+
                     <button type="submit">Submit Your Ticket</button>
 
                 </form>

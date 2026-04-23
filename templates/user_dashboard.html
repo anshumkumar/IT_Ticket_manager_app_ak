@@ -64,6 +64,7 @@
                         <th>Category</th>
                         <th>Priority</th>
                         <th>Status</th>
+                        <th>Linked devices</th>
                         <th>Additional Info</th>
                         <th>Action</th>
                     </tr>
@@ -76,6 +77,13 @@
                         <td>{{ ticket.category }}</td>
                         <td>{{ ticket.priority }}</td>
                         <td>{{ ticket.status }}</td>
+                        <td>
+                            {% if ticket.device_name %}
+                            {{ ticket.device_name }} - {{ ticket.serial_number }}
+                            {% else %}
+                            no device
+                            {% endif %}
+                        </td>
                         <td>{{ ticket.additional_info or '-' }}</td>
                         <td>
                             {% if ticket.status == 'Awaiting Info' %}

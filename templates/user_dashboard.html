@@ -15,11 +15,25 @@
             <a href="{{ url_for('submit_ticket') }}">Submit a New Ticket</a>
             <a href="{{ url_for('add_device') }}">Add Device</a>
             <a href="{{ url_for('logout') }}">Logout</a>
-            <button onclick="toggleDarkMode()" class="dark-mode-btn"> Dark Mode
-            </button>
+
+            <button onclick="toggleDarkMode()" class="dark-mode-btn">Dark Mode</button>
+
             <form action="{{ url_for('req_pass_reset') }}" method="POST">
-                <button type="submit" class="dark-mode-btn">Request Password Change</button>
+                <button type="submit">Request Password Reset</button>
             </form>
+
+            <div class="chatbot-box">
+                <h4>Chatbot</h4>
+
+                <form action="{{ url_for('app_chatbot') }}" method="POST">
+                    <input type="text" name="message" placeholder="I can help you, pls ask any question" required>
+                    <button type="submit">Ask</button>
+                </form>
+
+                {% if reply %}
+                    <p class="chatbot-reply">{{ reply }}</p>
+                {% endif %}
+            </div>
         </div>
 
         <div class="main-content">

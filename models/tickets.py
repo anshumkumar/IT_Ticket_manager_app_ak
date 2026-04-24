@@ -19,7 +19,7 @@ class Ticket:
     def create_ticket(self):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO tickets (user_id, title, description, status, category, priority, device_id) VALUES (?, ?, ?, ?, ?, ?)',
+        cursor.execute('INSERT INTO tickets (user_id, title, description, status, category, priority) VALUES (?, ?, ?, ?, ?, ?)',
                        (self.user_id, self.title, self.description, self.status, self.category, self.priority))
         conn.commit()
         conn.close()

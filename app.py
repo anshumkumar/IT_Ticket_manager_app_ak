@@ -11,7 +11,7 @@ app.secret_key = 'anshum_key'
 
 create_table()
 
-# This is the login route for app.
+# This is the login route for app.pip
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':

@@ -121,34 +121,22 @@ def submit_ticket():
     if request.method == 'POST':
         user_id = session['user_id']
         title = request.form.get('title', '').strip()
-        device_id = request.form.get('device_id', '').strip()
         description = request.form.get('description', '').strip()
         category = request.form.get('category', '').strip()
         priority = request.form.get('priority', '').strip()
         status = 'Open'
 
-        if device_id == '':
-            device_id = None
-        else:
-            device_id = int(device_id)
+        
 
-        if not title or not description or not category or not priority:
-            devices = Device.get_all_devices()
-            return render_template('submit_ticket.html', error='All fields are required.', devices=devices)
-
-        if priority not in ['1', '2', '3']:
-            devices = Device.get_all_devices()
-            return render_template('submit_ticket.html', error='Invalid priority selected.', devices=devices)
-
-        new_ticket = Ticket(None, user_id, title, description, status, category, int(priority), None, None, device_id)
+        new_ticket = Ticket(None, user_id, title, description, status, category, int(priority))
         new_ticket.create_ticket()
 # adds ticket to database.
 # create_ticket function is defined in tickets.py file, it adds the ticket to database.
         return redirect(url_for('user_dashboard'))
     
-    devices = Device.get_all_devices()
+  
 
-    return render_template('submit_ticket.html', devices=devices)
+    return render_template('submit_ticket.html')
 
 
 @app.route('/ticket/<int:ticket_id>/complete', methods=['POST'])

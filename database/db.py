@@ -28,7 +28,6 @@ def create_table():
     cursor.execute('''CREATE TABLE IF NOT EXISTS tickets (
                    id INTEGER PRIMARY KEY AUTOINCREMENT,
                    user_id INTEGER NOT NULL,
-                   device_id INTEGER,
                    title TEXT NOT NULL,
                    description TEXT NOT NULL,
                    status TEXT NOT NULL,
@@ -51,11 +50,7 @@ def create_table():
         cursor.execute("ALTER TABLE users ADD COLUMN password_request INTEGER DEFAULT 0")
     except sqlite3.OperationalError:
         pass
-    
-    try:
-        cursor.execute("ALTER TABLE tickets ADD COLUMN device_id INTEGER")
-    except sqlite3.OperationalError:
-        pass
+
 
     cursor.execute('''CREATE TABLE IF NOT EXISTS devices (
                    device_id INTEGER PRIMARY KEY AUTOINCREMENT,

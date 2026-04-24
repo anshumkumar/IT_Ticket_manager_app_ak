@@ -1,7 +1,7 @@
 from database.db import get_db_connection
 
 class Ticket:
-    def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None, additional_info=None, device_id=None):
+    def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None, additional_info=None):
         self.id = id
         self.user_id = user_id
         self.title = title
@@ -11,7 +11,7 @@ class Ticket:
         self.priority = priority
         self.staff_notes = staff_notes
         self.additional_info = additional_info
-        self.device_id = device_id
+
 # this is the ticket class, it has attrubutes for tickets, explained in my class diagram and documentation.
 # adding new functionality for staff to add notes to tickets, so im adding annother attribute called staff_notes.
 # additional info functionality being added.
@@ -19,8 +19,8 @@ class Ticket:
     def create_ticket(self):
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('INSERT INTO tickets (user_id, title, description, status, category, priority, device_id) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                       (self.user_id, self.title, self.description, self.status, self.category, self.priority, self.device_id))
+        cursor.execute('INSERT INTO tickets (user_id, title, description, status, category, priority, device_id) VALUES (?, ?, ?, ?, ?, ?)',
+                       (self.user_id, self.title, self.description, self.status, self.category, self.priority))
         conn.commit()
         conn.close()
     # creates a tickets and saves details to the database.

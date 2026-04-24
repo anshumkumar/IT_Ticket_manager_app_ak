@@ -42,17 +42,6 @@
                     <textarea name="description" required></textarea>
                     <br><br>
 
-                    <label>
-                        Link a device with ticket
-                    </label>
-                    <select name="device_link">
-                        <option value="">No device</option>
-                        {% for device in devices %}
-                        <option value="{{ device.device_name }} - {{ device.serial_number }}">
-                            {{ device.device_name }} - {{ device.serial_number }}
-                        </option>
-                        {% endfor %}
-                    </select>
 
                     <label>Category:</label>
                     <select name="category" required>

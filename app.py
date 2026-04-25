@@ -122,6 +122,17 @@ def submit_ticket():
         user_id = session['user_id']
         title = request.form.get('title', '').strip()
         description = request.form.get('description', '').strip()
+
+        # adding functionality to allows users to add devices in descriptions.
+
+        device_link = request.form.get('device_link','').strip()   
+        if device_link:
+            description = description + "\n Device linked with ticket: " + device_link
+            
+
+
+
+        # Above functionality is device link.
         category = request.form.get('category', '').strip()
         priority = request.form.get('priority', '').strip()
         status = 'Open'
@@ -134,9 +145,8 @@ def submit_ticket():
 # create_ticket function is defined in tickets.py file, it adds the ticket to database.
         return redirect(url_for('user_dashboard'))
     
-  
-
-    return render_template('submit_ticket.html')
+    devices = Device.get_all_devices()
+    return render_template('submit_ticket.html', devices=devices)
 
 
 @app.route('/ticket/<int:ticket_id>/complete', methods=['POST'])

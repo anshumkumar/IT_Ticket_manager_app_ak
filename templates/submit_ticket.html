@@ -46,8 +46,8 @@
                     <select name="device_link">
                         <option value="">No device</option>
                         {% for device in devices %}
-                        <option value="{{ device.device_name }} - {{ device.serial_number }}">
-                            {{ device.device_name }} - {{ device.serial_number }}
+                        <option value="{{ device.device_name }} - {{ device.serial_number }} - {{device.device_type}}">
+                            {{ device.device_name }} - {{ device.serial_number }} - {{device.device_type}}
                         </option>
                         {% endfor %}
                     </select>

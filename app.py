@@ -63,7 +63,7 @@ def register():
         if not name or not username or not password:
             return render_template('register.html', error='All fields are required.')
 
-        user_exists = User.get_user(username)
+        user_exists = User.get_user(username)   # I can use this in the part where admin creates accounts for IT Staff.
         if user_exists:
             return render_template('register.html', error='This account already exists.')
 # this is displayed if user already exists.
@@ -127,7 +127,7 @@ def submit_ticket():
 
         device_link = request.form.get('device_link','').strip()   
         if device_link:
-            description = description + "\n Device linked with ticket: " + device_link
+            description = description + "\n\n Device linked with ticket: " + device_link
             
 
 
@@ -324,6 +324,33 @@ def req_pass_reset():
 
     return redirect(url_for('user_dashboard'))
 
+
+# adding functionality for the admin to create it staff accounts.
+
+@app.route('/admin/create_staff_acc', methods=['GET','POST'])
+def create_staff_acc():
+    if 'user_id' not in session or session.get('role') != 'admin':
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '').strip()
+
+        if not name or not username or not password:
+            return render_template('create_staff_acc.html', error='Please fill all of the fields.')
+
+        user_exists = User.get_user(username)   #used to check if user exists.
+        if user_exists:
+            return render_template('create_staff_acc.html', error='This account already exists.')
+
+        new_user = User(None, name, username, password, 'staff')
+        new_user.create_user()
+
+        return redirect(url_for('admin_dashboard'))
+    return render_template('create_staff.html')
+
+
 # adding functionality for a chatbot
 # python dictionries will be used for this simple chatbot.
 
@@ -336,10 +363,11 @@ def app_chatbot():
 
     faq_answers = {
         "password": "To change your password, click 'Request Password Change'.",
-        "submit ticket": "Click 'Submit a New Ticket'.",
-        "cancel ticket": "You can cancel tickets from your dashboard.",
+        "submit ticket": "Click 'Submit a New Ticket button to submit your ticket'.",
+        "cancel ticket": "You can cancel tickets from your dashboard, press on cancel button.",
         "device": "Use 'Add Device' from the sidebar.",
-        "status": "Check ticket status in your dashboard."
+        "status": "Check ticket status in your dashboard.",
+        "additional info": "If staff has requested additional info, you can provide it by clicking on the button."
     }
 
     reply = "Sorry, I am unable to help you, please contact the admin."

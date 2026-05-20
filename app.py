@@ -11,12 +11,13 @@ app.secret_key = 'anshum_key'
 
 create_table()
 
-# This is the login route for app.pip
+# This is the login route for app
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
         password = request.form.get('password', '').strip()
+        
 
         if not username or not password:
             return render_template('login.html', error='Username and password are required.')
@@ -46,7 +47,6 @@ def login():
                     return redirect(url_for('staff_dashboard'))
                 else:
                     return redirect(url_for('user_dashboard'))
-# admin dashboard has been removed for simplicity.
         return render_template('login.html', error='You have entered an invalid username or password. Please try again.')
 # this is the error message above, for wrong credentials.
     return render_template('login.html')
@@ -65,7 +65,7 @@ def register():
 
         user_exists = User.get_user(username)   # I can use this in the part where admin creates accounts for IT Staff.
         if user_exists:
-            return render_template('register.html', error='This account already exists.')
+            return render_template('register.html', error='This account already exists.')    # error message for already existing account. 
 # this is displayed if user already exists.
 
         new_user = User(None, name, username, password, 'user')
@@ -365,7 +365,7 @@ def app_chatbot():
         "password": "To change your password, click 'Request Password Change'.",
         "submit ticket": "Click 'Submit a New Ticket button to submit your ticket'.",
         "cancel ticket": "You can cancel tickets from your dashboard, press on cancel button.",
-        "device": "Use 'Add Device' from the sidebar.",
+        "device": "Use 'Add Device' from the sidebar to add a device.",
         "status": "Check ticket status in your dashboard.",
         "additional info": "If staff has requested additional info, you can provide it by clicking on the button."
     }

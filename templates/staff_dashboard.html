@@ -3,101 +3,117 @@
 <head>
     <title>Staff Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='theme.js') }}"></script>
 </head>
-<body>
+<body class="dashboard-page">
 
-    <h1>Staff Dashboard</h1>
+    <div class="dashboard">
 
-    <a href="{{ url_for('logout') }}">Logout</a>
+        <div class="side-bar">
+            <h2>IT System</h2>
+            <a href="{{ url_for('logout') }}">Logout</a>
+            
+            <button onclick="toggleDarkMode()" class="dark-mode-btn">
+                Dark Mode
+            </button>
+        </div>
 
-    <h2>All Tickets</h2>
+        <div class="main-content">
 
-    {% if tickets %}
-        <table class="styled-table">
-            <tr>
-                <th>ID</th>
-                <th>User ID</th>
-                <th>Name</th>
-                <th>Username</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Category</th>
-                <th>Priority</th>
-                <th>Status</th>
-                <th>Additional info</th>
-                <th>Staff Notes</th>
-                <th>Action</th>
-            </tr>
+            <h1>Staff Dashboard</h1>
 
-            {% for ticket in tickets %}
-            <tr>
-                <td>{{ ticket.id }}</td>
-                <td>{{ ticket.user_id }}</td>
-                <td>{{ ticket.user_name }}</td>
-                <td>{{ ticket.username }}</td>
-                <td>{{ ticket.title }}</td>
-                <td>{{ ticket.description }}</td>
-                <td>{{ ticket.category }}</td>
-                <td>{{ ticket.priority }}</td>
-                <td>{{ ticket.status }}</td>
-                <td>{{ ticket.additional_info or '-' }}</td>
-                <td>
-                    <form action="{{ url_for('update_staff_notes', ticket_id=ticket.id) }}" method="POST">
-                        <textarea name="staff_notes" rows="3" cols="20">{{ ticket.staff_notes or '' }}</textarea>
-                        <br>
-                        <button type="submit">Save</button>
-                    </form>
-                </td>
-                <td>
-                    {% if ticket.status != 'Closed' %}
-                        <form action="{{ url_for('complete_ticket', ticket_id=ticket.id) }}" method="POST">
-                            <button type="submit">Mark Complete</button>
-                        </form>
+            <h2>All Tickets</h2>
 
-                        <form action="{{ url_for('info_for_ticket', ticket_id=ticket.id) }}" method="POST">
-                            <button type="submit">Request Info</button>
-                        </form>
-                    {% else %}
-                        Completed
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>No tickets available.</p>
-    {% endif %}
+            {% if tickets %}
+                <table class="styled-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>User ID</th>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Additional info</th>
+                        <th>Staff Notes</th>
+                        <th>Action</th>
+                    </tr>
 
+                    {% for ticket in tickets %}
+                    <tr>
+                        <td>{{ ticket.id }}</td>
+                        <td>{{ ticket.user_id }}</td>
+                        <td>{{ ticket.user_name }}</td>
+                        <td>{{ ticket.username }}</td>
+                        <td>{{ ticket.title }}</td>
+                        <td>{{ ticket.description }}</td>
+                        <td>{{ ticket.category }}</td>
+                        <td>{{ ticket.priority }}</td>
+                        <td>{{ ticket.status }}</td>
+                        <td>{{ ticket.additional_info or '-' }}</td>
+                        <td>
+                            <form action="{{ url_for('update_staff_notes', ticket_id=ticket.id) }}" method="POST">
+                                <textarea name="staff_notes" rows="3" cols="20">{{ ticket.staff_notes or '' }}</textarea>
+                                <br>
+                                <button type="submit">Save</button>
+                            </form>
+                        </td>
+                        <td>
+                            {% if ticket.status != 'Closed' %}
+                                <form action="{{ url_for('complete_ticket', ticket_id=ticket.id) }}" method="POST">
+                                    <button type="submit">Mark Complete</button>
+                                </form>
+                                <br>
 
-    <h2>Devices</h2>
-    
-    {% if devices %}
-    <table class="styled-table">
-        <tr>
-            <th>Device ID</th>
-            <th>Device Name</th>
-            <th>Device Type</th>
-            <th>Assigned To (User ID)</th>
-            <th>Serial Number</th>
-            <th>Location</th>
-            <th>Last Maintenance Date</th>
-        </tr>
+                                <form action="{{ url_for('info_for_ticket', ticket_id=ticket.id) }}" method="POST">
+                                    <button type="submit">Request Info</button>
+                                </form>
+                            {% else %}
+                                Completed
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <p>No tickets available.</p>
+            {% endif %}
 
-        {% for device in devices %}
-        <tr>
-            <td>{{ device.device_id }}</td>
-            <td>{{ device.device_name }}</td>
-            <td>{{ device.device_type }}</td>
-            <td>{{ device.assigned_to }}</td>
-            <td>{{ device.serial_number }}</td>
-            <td>{{ device.location }}</td>
-            <td>{{ device.last_maintenance_date }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% else %}
-    <p>No devices registered.</p>
-    {% endif %}
+            <h2>Devices</h2>
+
+            {% if devices %}
+            <table class="styled-table">
+                <tr>
+                    <th>Device ID</th>
+                    <th>Device Name</th>
+                    <th>Device Type</th>
+                    <th>Assigned To (User ID)</th>
+                    <th>Serial Number</th>
+                    <th>Location</th>
+                    <th>Last Maintenance Date</th>
+                </tr>
+
+                {% for device in devices %}
+                <tr>
+                    <td>{{ device.device_id }}</td>
+                    <td>{{ device.device_name }}</td>
+                    <td>{{ device.device_type }}</td>
+                    <td>{{ device.assigned_to }}</td>
+                    <td>{{ device.serial_number }}</td>
+                    <td>{{ device.location }}</td>
+                    <td>{{ device.last_maintenance_date }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% else %}
+            <p>No devices registered.</p>
+            {% endif %}
+
+        </div>
+
+    </div>
 
 </body>
 </html>

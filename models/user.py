@@ -1,14 +1,20 @@
 from werkzeug.security import generate_password_hash
 from database.db import get_db_connection
 
+# the user class, contains informaion for users, that is added in database.
+# contains methods for creating, getting, deleting users and changing password.
+# contains an attribute that defines role of user (user, IT Staff or admin)
 
 class User:
     def __init__(self, id, name, username, password, role):
-        self.id = id
+        self.id = id    # user id
         self.name = name
         self.username = username
         self.password = password
         self.role = role
+
+
+# this is the function to create user account and add it to database.
 
     def create_user(self):
         conn = get_db_connection()

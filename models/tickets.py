@@ -2,7 +2,7 @@ from database.db import get_db_connection
 
 class Ticket:
     def __init__(self, id, user_id, title, description, status, category, priority, staff_notes=None, additional_info=None):
-        self.id = id
+        self.id = id     #ticket id. 
         self.user_id = user_id
         self.title = title
         self.description = description
